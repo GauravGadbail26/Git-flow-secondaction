@@ -8,8 +8,8 @@ env:
 jobs:
   test:
     env:
-      MONGODBUSERNAME: TestName
-      MONGODBPASSWORD: XYZ
+      MONGODBUSERNAME: ${{ secrets.MONGODBUSERNAME }}     # Setup secrete at setting --> Secrete and then seup their value in this repo..
+      MONGODBPASSWORD: ${{ secrets.MONGODBPASSWORD }}
       PORT: 8080
     runs-on: ubuntu-latest
     steps:
