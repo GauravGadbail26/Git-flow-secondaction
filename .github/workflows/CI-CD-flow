@@ -3,8 +3,13 @@ on:
   push:
     branches:
       - main
+env:
+  USERNAME: TestName 
 jobs:
   test:
+    env:
+      TestUser1: TestName
+      DBURL: XYZ
     runs-on: ubuntu-latest
     steps:
       - name: Get code
