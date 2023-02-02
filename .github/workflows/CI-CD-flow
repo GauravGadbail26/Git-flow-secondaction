@@ -9,6 +9,11 @@ jobs:
     steps:
       - name: Get code
         uses: actions/checkout@v3
+      - name: save chache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: deps-node-module-${{ hashFiles('**/package-lock.json') }}          #for cache dependies so that we dont need to download dependecies everytime
       - name: Install dependencies
         run: npm ci
       - name: Lint code
@@ -23,15 +28,20 @@ jobs:
     steps:
       - name: Get code
         uses: actions/checkout@v3
+      - name: save chache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: deps-node-module-${{ hashFiles('**/package-lock.json') }}      
       - name: Install dependencies
         run: npm ci
       - name: Build website
         run: npm run build
       - name: Publish File name
         id: publish
-        run: find dist/assets/*.js -type f -execdir echo 'script-file={}' >> $GITHUB_OUTPUT ';'
+        run: find dist/assets/*.js -type f -execdir echo 'script-file={}' >> $GITHUB_OUTPUT ';'   #getting file name for further job. we have provided outputs and id for this.
       - name: upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3                # for uploading artifacts
         with:
           name: dist-files
           path: |
@@ -42,12 +52,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download artifacts
-        uses: actions/download-artifacts@v3
+        uses: actions/download-artifacts@v3              # for downloading artifacts in dist folder
         with: 
           name: dist-files
       - name: output content
         run: ls
       - name: Output file name
-        run: echo "${{ needs.build.outputs.script-file }} "
+        run: echo "${{ needs.build.outputs.script-file }} "        # here we are using cmnd to get previous capture file name
       - name: Deploy
         run: echo "Deploying..."
