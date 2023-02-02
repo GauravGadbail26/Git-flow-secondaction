@@ -8,8 +8,8 @@ env:
 jobs:
   test:
     env:
-      TestUser1: TestName
-      DBURL: XYZ
+      MONGODBUSERNAME: TestName
+      MONGODBPASSWORD: XYZ
       PORT: 8080
     runs-on: ubuntu-latest
     steps:
@@ -24,6 +24,7 @@ jobs:
         run: npm ci
       - name: Lint code
         run: npm run lint & npx wait http://127.0.0.1:$PORT           # added env from above for linux
+        run: echo "MONGODB_USERNAME: ${{ env.MONGODBUSERNAME }}"      # to get username printed from environment variable
       - name: Test code
         run: npm run test
   build:
@@ -67,3 +68,4 @@ jobs:
         run: echo "${{ needs.build.outputs.script-file }} "        # here we are using cmnd to get previous capture file name
       - name: Deploy
         run: echo "Deploying..."
+        run: "USERNAME: $USERNAME"            # This is global username coming from main job
