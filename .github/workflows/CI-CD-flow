@@ -7,6 +7,7 @@ env:
   USERNAME: TestName 
 jobs:
   test:
+  environment: development            # this is been setup under environemnt setting and created secrete there
     env:
       MONGODBUSERNAME: ${{ secrets.MONGODBUSERNAME }}     # Setup secrete at setting --> Secrete and then seup their value in this repo..
       MONGODBPASSWORD: ${{ secrets.MONGODBPASSWORD }}
